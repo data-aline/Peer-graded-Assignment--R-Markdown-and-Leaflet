@@ -1,0 +1,44 @@
+---
+title: 'NO2 values in Hamburg'
+author: "Aline Gefeller"
+date: "15 September 2017"
+output: ioslides_presentation
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+```{r results='hide', message=FALSE, warning=FALSE}
+# Load data & tidy up
+library(tidyr)
+library(dplyr)
+library(leaflet)
+
+
+set.seed(2017-09-13)
+
+df_all<-data.frame(name=c("Flughafen","Sternschanze","Altona-Elbhang","Finkenwerder West","Finkenwerder Airbus","Hafen/Kl. Grasbrook","Wilhelmsburg","Veddel","Billbrook"),lat=c(53.633622,53.564488,53.545240,53.536226,53.531363,53.529166,53.507913,53.522906,53.529430),lng=c(9.997413,9.968350,9.944919,9.844190,9.831636,9.981539,9.990544,10.021970,10.082149))
+df_all<-arrange(df_all,name)
+ 
+#NO2 values in August 2017
+NO2<- c(31,23,15,16,21,34,25,32,24)
+NO2_Hamburg<-cbind(df_all, NO2)
+
+```
+
+
+
+
+## NO2 values August 2017
+### - measured at the weather stations in Hamburg -
+
+```{r, message=FALSE, warning=FALSE }
+NO2_Hamburg%>% leaflet() %>% addTiles() %>% addCircles(weight=4, popup=paste(NO2_Hamburg$name, ", NO2:",as.character(NO2)," µg/m³"),radius=NO2_Hamburg$NO2*30,color="darkblue")
+```
+September 15, 2017
+
+
